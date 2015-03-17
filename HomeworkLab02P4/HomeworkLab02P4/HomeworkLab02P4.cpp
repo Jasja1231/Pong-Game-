@@ -644,7 +644,7 @@ LRESULT CALLBACK WndProc1(HWND hWnd1, UINT message, WPARAM wParam, LPARAM lParam
 			}
 
 		//Decide which direction to go vertically
-		if(hWnd1_y > 384 || (hWnd1_y == 384-16-10 && hWnd1_x > hWnd2_x && hWnd1_x+16 < hWnd2_x + hWnd2_width))
+		if(hWnd1_y > 384 || (hWnd1_y == 384-16-10 && hWnd1_x >= hWnd2_x && hWnd1_x+16 <= hWnd2_x + hWnd2_width))
 		{
 			check_vertical = true;  //goes up
 		}
@@ -653,10 +653,11 @@ LRESULT CALLBACK WndProc1(HWND hWnd1, UINT message, WPARAM wParam, LPARAM lParam
 			check_vertical = false;		
 		}
 
-		if((hWnd1_x+16 == hWnd2_x || hWnd1_x == hWnd2_x+hWnd2_width) &&	hWnd1_x>=400-10-GetHeight(hWnd2) && hWnd1_y + 16 <= 10)
-		{
-			check_vertical=false;  //WHAT DID U DO HERE!!!!!! DTUPID WINAPI
-			check_horisontal=!check_horisontal;
+		//reflection from  sides of the pallet
+		if((hWnd1_x+16 == hWnd2_x || hWnd1_x == hWnd2_x+hWnd2_width) &&	(hWnd1_y+16>=400-10-GetHeight(hWnd2) && hWnd1_y + 16 <= 390))
+		{	
+			check_vertical=false;  //goes down
+			check_horisontal=!check_horisontal;//right / left
 		}
 
 		if(hWnd1_y + 16 == 400 && !game_over){
@@ -679,30 +680,31 @@ LRESULT CALLBACK WndProc1(HWND hWnd1, UINT message, WPARAM wParam, LPARAM lParam
 			MoveWindow(hWnd1, hWnd1_x, hWnd1_y,width,height,TRUE);
 		}
 		//down left
-		if(check_vertical == false && check_horisontal == false){
-			hWnd1_x -= pallet_speed;
-			hWnd1_y += pallet_speed;
+		else
+			if(check_vertical == false && check_horisontal == false){
+				hWnd1_x -= pallet_speed;
+				hWnd1_y += pallet_speed;
 
 			
-			MoveWindow(hWnd1, hWnd1_x, hWnd1_y,width,height,TRUE);
-		}
-
-		if (check_vertical == true && check_horisontal == true)
-					 {
-						 hWnd1_x += pallet_speed;
-						 hWnd1_y -= pallet_speed;
-						
-			MoveWindow(hWnd1, hWnd1_x, hWnd1_y,width,height,TRUE);
-					 }
-			
-		if (check_vertical == true && check_horisontal == false)
-					 {
-						 hWnd1_x -= pallet_speed;
-						 hWnd1_y -= pallet_speed;
-						
-						 MoveWindow(hWnd1, hWnd1_x, hWnd1_y,width,height,TRUE);
-					 }
+				MoveWindow(hWnd1, hWnd1_x, hWnd1_y,width,height,TRUE);
 			}
+		else
+			if (check_vertical == true && check_horisontal == true)
+						 {
+							 hWnd1_x += pallet_speed;
+							 hWnd1_y -= pallet_speed;
+						
+				MoveWindow(hWnd1, hWnd1_x, hWnd1_y,width,height,TRUE);
+						 }
+		else	
+			if (check_vertical == true && check_horisontal == false)
+						 {
+							 hWnd1_x -= pallet_speed;
+							 hWnd1_y -= pallet_speed;
+						
+							 MoveWindow(hWnd1, hWnd1_x, hWnd1_y,width,height,TRUE);
+						 }
+				}
 		break;
 
 	case WM_COMMAND:
