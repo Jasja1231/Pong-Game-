@@ -339,6 +339,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					  SetClassLong(hWnd, GCL_HBRBACKGROUND, (LONG)hbrush);
 					  InvalidateRect(hWnd, &rc, TRUE);
 					  pallet_speed = 1;
+					  SetFocus(hWnd2);
 					}
 				 else
 				 {
@@ -712,7 +713,7 @@ LRESULT CALLBACK WndProc1(HWND hWnd1, UINT message, WPARAM wParam, LPARAM lParam
 	case WM_PAINT:
 		{
 			hdc = BeginPaint(hWnd1, &ps);
-			
+			SetFocus(hWnd2);
 			EndPaint(hWnd1, &ps);
 
 		}
